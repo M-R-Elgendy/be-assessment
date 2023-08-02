@@ -23,6 +23,7 @@ export const getAllReports = async (req, res, next) => {
             where: { checkId: checksIds },
         });
 
+        if (reports.length === 0) return res.status(200).json({ message: 'No reports found' });
         const report = generatReport(checks, reports);
 
         return res.status(200).json({ code: 200, message: "Data found", data: report });
@@ -49,7 +50,7 @@ export const getReportByCheckId = async (req, res, next) => {
                 ['createdAt', 'DESC']
             ],
         });
-        if (!reports) return res.status(200).json({ message: 'No reports found' });
+        if (reports.length === 0) return res.status(200).json({ message: 'No reports found' });
 
         const checkReport = generatReport(check, reports);
         return res.status(200).json({ code: 200, message: "Data found", data: checkReport });
@@ -87,7 +88,7 @@ export const getReportByTagName = async (req, res, next) => {
             where: { checkId: checksIds }
         });
 
-        if (!reports) return res.status(200).json({ message: 'Report not found' });
+        if (reports.length === 0) return res.status(200).json({ message: 'Report not found' });
 
         const report = generatReport(checks, reports);
 
